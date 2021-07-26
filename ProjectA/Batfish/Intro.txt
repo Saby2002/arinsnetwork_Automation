@@ -1,0 +1,112 @@
+`What is Batfish?`
+
+Batfish is an open-source multi-vendor network analysis tool that allows you to validate configuration data, query control plane state, verify ACL rule sets, analyze routing/flow paths, as well as simulate network failure. 
+
+BatFish finds errors and gaurantees the corrextness of planned or current network configurations. It enables safe and rapid network evolution, without the fear of outages or security breaches. 
+
+Batfish runs as a containerized service, and runs offline.
+Example  No direct access to network devices is required. Batfish learns about the network via snapshots. A snapshot is a collectiion of information about your network (such as device configurations and server details such as IP and IPtable information.)
+
+Once the snapshot has been uploaded to the Batfish service, a series of internal models are built. The firts thing to note is that these models are vendor agnostic. 
+Secondly these model hold both network configuration and the network control plane(such as OSPF adjacency, BGP sessions etc)
+
+These models are then queried via questions using either the Python library pybatfish or the Batfish Ansible role. 
+
+			Python Virtualenv
+			------------------
+			
+		           ANSIBLE
+			Batfish role
+			     |
+			     |
+			 pybatfish
+			     |
+			  REST API
+			     |
+			     |
+			B A T F I S H
+       			  DOCKER
+
+`The Why`
+
+Batfish offers a range of features as a result of its use of network modelling and simulation. 
+In turn these features allow you to perform network verification and analysis that would either be extremely difficult, impossible or extremely time consuming using traditional methods 
+Ex : sending actual packets across the network
+
+`Use Cases`
+
+Impact Analysis : Simulate how your network will handle and respond to failure. 
+		  For example : the failure of an interface or node.
+
+Configuration Auditing : Ensure your network devices are configured correctly against your configuration standards
+
+ACL Testing : Easily validate that ACLs are correctly permitting or denying the expected flows. 
+
+`Feature`
+
+Multi-Vendor Abstraction : 
+
+Batfisg use of vendor agnostic models allows you to query information about the network across different vendor types and retrive the information back in a common data structure.
+
+Multi Vendor Support : 
+
+Batfish provides support for the following vendors :
+	Arista
+	AWS
+	Cisco
+	Cumulus
+	F5 BIG-IP
+	Juniper
+	Palo Alto Networks
+
+Packet Forwarding analysis:
+
+Batfish allows you to perform virtual traceroutes and reachability tests across you network toplogy.
+Because this uses network simulation, the constraints of traditional methods are removed.
+Therefore can simulate traffic being sent from multiple points all at once, simulate the behaviour across all ports and protocols. All of which is just the tip of the iceberg.
+
+Configuration Analysis :
+
+Batfish provides an extensive range of configuration attributes that you can query. Such as BGP, OSPF interfaces properties etc.
+
+Control Plane Analysis :
+
+Batfish recreates the control plane. This allows you to verify control plane sessions and adjacencies (such as (BGP and OSPF) along providing fully populated device RIBS.
+
+ACL analysis : 
+
+Batfish allows you to validate the outcome f sending certain traffic flows through an ACL or sets of multiple ingress/egress filters.
+
+Simulated :
+
+Batfish use of simulaton brings a number of benefits vs the use of using virtual machines for creating the test network. Such as :
+	VM boot times can be slow : Because VMs are negated, so are the slow boot times. 
+				    Therefore boot times are massively reduced along with the amount of time it takes to build the testing enviornment
+	Supported Features : Due to the virtualized nature of VM, it is not uncommon for many features to not be available in the VE compared to itsphysical counterpart.
+
+	Resources
+
+Topology forking :
+
+Batfish allows you to take your network topology, disable a node or link and then compared the state of the network. This in turn allows you to perform a simulated impact analusis of your network. 
+
+
+`How to install Batfish`
+
+Installing Batfish : 
+
+Batfish runs as a containerized service. Therefore to install Batfish we must first have Docker running. 
+For those of you that are new to Docker.
+
+- Docker is a container platform that can be used to create lightweight isolated environments, allowing you to easily sepearted dependencies between projects.
+
+
+Install Batfish by performing the following :
+
+- docker pull batfish/allinone
+- docker run --name batfish -d -p 8888:8888 -p 9997:9997 -p 9996:9996 batfish/allinone
+
+
+
+
+

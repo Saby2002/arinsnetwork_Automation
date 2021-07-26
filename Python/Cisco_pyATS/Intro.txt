@@ -1,0 +1,466 @@
+`What is pyATS?`
+
+Cisco pyATS is a Python framework and set of libraries for performing Network testing.
+Originally developed internally within Cisco for testing. 
+
+
+Some of the Key feature of pyATS provides are : 
+
+- Multi Vendor parsing of unstructured data into structured data. 
+- Profiling and differential comparisons of the network state
+- Helper libraries that assist with working multiple devices and structured data sets.
+- Testing frameworks to structure and provide reporting for your tests.
+
+The pyATS framework consits of various layers. The layers are : 
+
+`pyATS`
+
+The core of pyATS framework deals with th elower level mechanics, such as device connection setup and handling the execution of commands on the devices.
+pyATS core also defines one of the most fundamental components within the framework, the testbed.
+
+The testbed, typically represented in YAML, describes the  topology that will be tested. For exaple it contains the hostnames, the IPs and the credentials we use to connect the device.
+
+The testbed comprises ofvarious objects, each object is a Python object that we can interact with. 
+The objects that make up the testbed/topology can consists of multiple device, with each device having multiple interfaces etc.
+
+The object within the testbed also provide various methods that allow us to perfrom a range of actions and operations against it such as :
+
+device.connect()
+device.ping("1.1.1.1")
+device.execute("show version")
+
+pyATS also provides different frameworks and libraries for creating test cases, allowing you to build out your tests in a structured and sstandardised way. Utilising pyATS core for ths will also enable you to remove some heavy lifiting, such as logging reporting and run-time execution, typically required when building out a suite of tests. 
+
+
+`Genie`
+
+Genie sits on top of the pyATS core layer, utilising and abstracting the underlying libraried and framesworks that pyATS core presents. Genie provides an extensive library of multi-vendor parsers (know as Genie Parsers) for converting raw test into structured text.  Genie also provides the following, whihc reside under Genie Models.
+
+	- Conf : A platform-agnostic set of python modules and attributes used to configure devices.
+	- Ops : This allows you to learn a give feature/protocol by combining multiple parsers. These parsed results are then aggregated into a single structured result.  
+
+`Integrations`
+
+Sitting above the Genie layer, we have integrations. This layer provides various libraries and plugions that further abstract the underlying pyATS/Genie layers. allowsing us to take full advantage of pyATS at a higher level. 
+
+For example, we can easily define keyword values for test cases without writing any Python or understanding the lower-level semantics using the Robot Framework integration. 
+
+Integrations 		Robots Frameworks, Ansible etc.
+Genie 		        Parsers, Comparisions, feature model implementation, libraries
+pyATS Core	        Topology/testbeds, test executing, runtime and reporting lowlevel device interaction.
+
+
+Note : It is worth mentioning that the majority of the pyATS (an Genie) is open source. However, some parts of the pyATS core are still internal to Cisco. 
+
+`Requirments`
+
+The main requirments :
+
+	Python 3.5+ must be used
+	Installation only supports a Linux based OS. If you are using Windows you can use WSL2, which works great.
+
+
+`Install pyATS`
+
+Now we are inside our newly created virtual environment; we can install pyATS like so:
+
+	- pip install pyats
+
+It is worth mentioning that pyATS uses Claver for its versioning.
+
+`Install pyATS`
+
+pip install "pyats[full]==21.4"
+
+`Testbed`
+
+`Introduction to Testbeds`
+
+Testbeds (typically YAML based) allow us to provide the details of the environment and devices we wish to test. For example, the connectivity details such as IP or hostname, the connectivity method, the OS type and the login credentials.
+
+PyATS provides various options for automatically creating testbed files from different  sources suc as Netbox, Ansible and Excel. 
+
+`Generate from Excel`
+
+Step 1 : Pre build excel spreadsheet to generate our testbed file.
+	 The Env syntax is used to pull the username and password from your environment variables. 
+	 Therefore ensure to place the userna,e and password into your credentials.sh script within your repo and loaded them into your environment variables via source credentials.sh. 
+	 Further details around the lab credentials can be found here.
+	
+# pyats create testbed file --path testbeds/Device_Details.xlsx --output testbeds/external_testbed.yml
+
+Then testbed file generated
+
+devices:
+  CE1:
+    connections:
+      cli:
+        ip: 169.254.255.105
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: ios
+    type: ios
+  CE2:
+    connections:
+      cli:
+        ip: 169.254.255.106
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: ios
+    type: ios
+  Leaf1:
+    connections:
+      cli:
+        ip: 169.254.255.112
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: admin
+      enable:
+        password: lab123
+    os: eos
+    type: eos
+  Leaf2:
+    connections:
+      cli:
+        ip: 169.254.255.113
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: eos
+    type: eos
+  P1:
+    connections:
+      cli:
+        ip: 169.254.255.107
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: ios
+    type: ios
+  P2:
+    connections:
+      cli:
+        ip: 169.254.255.108
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: ios
+    type: ios
+  PE3:
+    connections:
+      cli:
+        ip: 169.254.255.103
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: timos
+    type: timos
+  PE4:
+    connections:
+      cli:
+        ip: 169.254.255.104
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: timos
+    type: timos
+  PE5:
+    connections:
+      cli:
+        ip: 169.254.255.109
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: junos
+    type: junos
+  PE6:
+    connections:
+      cli:
+        ip: 169.254.255.114
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: junos
+    type: junos
+  Spine1:
+    connections:
+      cli:
+        ip: 169.254.255.110
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: nxos
+    type: nxos
+  Spine2:
+    connections:
+      cli:
+        ip: 169.254.255.111
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: nxos
+    type: nxos
+  XR1:
+    connections:
+      cli:
+        ip: 169.254.255.101
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: iosxr
+    type: iosxr
+  XR2:
+    connections:
+      cli:
+        ip: 169.254.255.102
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: iosxr
+    type: iosxr 
+
+Another methods to generate the testbed using `pyats create testbed interactive`
+
+`To Validate`
+
+Post creation need to validate 
+# pyats validate testbed testbeds/external_testbeds.yml
+
+(pyats_env) [arin@arinsnetwork Cisco_pyATS]$ pyats validate testbed testbeds/external_testbed.yml 
+Loading testbed file: testbeds/external_testbed.yml
+--------------------------------------------------------------------------------
+
+Testbed Name:
+    external_testbed
+
+Testbed Devices:
+.
+|-- CE1 [ios/ios]
+|-- CE2 [ios/ios]
+|-- Leaf1 [eos/eos]
+|-- Leaf2 [eos/eos]
+|-- P1 [ios/ios]
+|-- P2 [ios/ios]
+|-- PE3 [timos/timos]
+|-- PE4 [timos/timos]
+|-- PE5 [junos/junos]
+|-- PE6 [junos/junos]
+|-- Spine1 [nxos/nxos]
+|-- Spine2 [nxos/nxos]
+|-- XR1 [iosxr/iosxr]
+`-- XR2 [iosxr/iosxr]
+
+YAML Lint Messages
+------------------
+
+Warning Messages
+----------------
+ - Device 'CE1' has no interface definitions
+ - Device 'CE2' has no interface definitions
+ - Device 'Leaf1' has no interface definitions
+ - Device 'Leaf2' has no interface definitions
+ - Device 'P1' has no interface definitions
+ - Device 'P2' has no interface definitions
+ - Device 'PE3' has no interface definitions
+ - Device 'PE4' has no interface definitions
+ - Device 'PE5' has no interface definitions
+ - Device 'PE6' has no interface definitions
+ - Device 'Spine1' has no interface definitions
+ - Device 'Spine2' has no interface definitions
+ - Device 'XR1' has no interface definitions
+ - Device 'XR2' has no interface definitions
+
+At this point the interface definitions could safely ignored.
+
+
+`Overview of Interaction Types`
+
+pyATS being Python based, it goes withouut saying that you can interact with everything via Python. 
+
+
+PyATS provides several options for running some of the various features directly from the command line. 
+This is a great option if we need to quickly run a test or collect some output without having to write any python code.
+
+Both pyats and genie CLI are available. The genie CLI exposes a subset of the features of Genie, the pyats CLI exposes a subset of features for both pyATS core and Genie. 
+
+
+Using the commandline option is great, however only some of the features of pyats are provided via the command-line, therefore for maximum flexibility and to access the full suite of features in pyATS, we need to interact with it directly, via python. 
+
+Refer as example : demo_pyats.py
+
+`Shell`
+
+When developing and testing our pyATS Python scripts, we can leverage the pyatsshell command. 
+This takes our testbed file as an input, perfroms the tested load and enters the user into a python interactive shell. Therefore the main benefits of using the shell is that it removed having to import and load the testbed file and also that the shell enters you into th epython interpreter. 
+
+Note : If you have ipython installed the pyats shell will place you into an iPython interactive shell instead. 
+
+(pyats_env) [arin@arinsnetwork Cisco_pyATS]$ pyats shell --testbed-file testbeds/external_testbed.yml
+Welcome to pyATS Interactive Shell
+==================================
+Python 3.6.8 (default, Mar 19 2021, 05:13:41) 
+[GCC 8.4.1 20200928 (Red Hat 8.4.1-1)]
+
+>>> from pyats.topology.loader import load
+>>> testbed = load('testbeds/external_testbed.yml')
+-------------------------------------------------------------------------------            
+>>> from pyats.topology.loader import load
+>>> testbed = load('testbeds/external_testbed.yml')
+>>> device = testbed.devices['CE1']
+>>> device.connect(log_stout=False)
+
+2021-07-27 00:14:34,384: %UNICON-INFO: +++ CE1 logfile /tmp/CE1-cli-20210727T001434383.log +++
+
+2021-07-27 00:14:34,385: %UNICON-INFO: +++ Unicon plugin ios +++
+Password: 
+
+2021-07-27 00:14:34,965: %UNICON-INFO: +++ connection to spawn: ssh -l arin 169.254.255.105, id: 139999018312088 +++
+
+2021-07-27 00:14:34,965: %UNICON-INFO: connection to CE1
+
+CE1>
+
+2021-07-27 00:14:35,037: %UNICON-INFO: +++ initializing handle +++
+enable
+
+
+`What is Genie Parse?`
+
+Genie parse provides the ability to parse a given command into structured output. 
+By having the output in a structured format, we can work with the data in a programmatic way, such as looping over the data or extracting certain elements. 
+
+For example, if we were to collect the show int ip br output, we would get a output similar to router output.
+
+RP/0/0/CPU0:XR1#
+{'interface': {'GigabitEthernet0/0/0/0': {'interface_status': 'Shutdown',
+                                          'ip_address': 'unassigned',
+                                          'protocol_status': 'Down',
+                                          'vrf_name': 'default'},
+               'GigabitEthernet0/0/0/1': {'interface_status': 'Shutdown',
+                                          'ip_address': 'unassigned',
+                                          'protocol_status': 'Down',
+                                          'vrf_name': 'default'},
+               'GigabitEthernet0/0/0/2': {'interface_status': 'Shutdown',
+                                          'ip_address': 'unassigned',
+                                          'protocol_status': 'Down',
+                                          'vrf_name': 'default'},
+               'GigabitEthernet0/0/0/3': {'interface_status': 'Shutdown',
+                                          'ip_address': 'unassigned',
+                                          'protocol_status': 'Down',
+                                          'vrf_name': 'default'},
+               'GigabitEthernet0/0/0/4': {'interface_status': 'Shutdown',
+                                          'ip_address': 'unassigned',
+                                          'protocol_status': 'Down',
+                                          'vrf_name': 'default'},
+               'GigabitEthernet0/0/0/5': {'interface_status': 'Shutdown',
+                                          'ip_address': 'unassigned',
+                                          'protocol_status': 'Down',
+                                          'vrf_name': 'default'},
+               'GigabitEthernet0/0/0/6': {'interface_status': 'Shutdown',
+                                          'ip_address': 'unassigned',
+                                          'protocol_status': 'Down',
+                                          'vrf_name': 'default'},
+               'MgmtEth0/0/CPU0/0': {'interface_status': 'Up',
+                                     'ip_address': '169.254.255.101',
+                                     'protocol_status': 'Up',
+                                     'vrf_name': 'mgmt'}}}
+
+Instead we ca parse this through Genie parse to get structured output like above.
+
+with our data structured, we can now use programmatic methods for working with the data, such as perfroming key-value lookups.
+
+In [8]: ip_interface_brief_output['interface']['MgmtEth0/0/CPU0/0']                                                 
+Out[8]: 
+{'ip_address': '169.254.255.101',
+ 'interface_status': 'Up',
+ 'protocol_status': 'Up',
+ 'vrf_name': 'mgmt'}
+
+In [9]: ip_interface_brief_output['interface']['MgmtEth0/0/CPU0/0']['ip_address']                                   
+Out[9]: '169.254.255.101'
+
+`Supported Parsers`
+
+Genie supports various NOS:
+	- IOS
+	- IOSXE
+	- IOSXR
+	- NXOS
+	- ASA
+	- Linux
+	- JUNOS
+	- SROS
+	- F5
+	- Manymore
+
+
+`What is Genie Learn?`
+
+Genie Learn:
+
+Provides a representation of the current operational state f a device, per feature(protocol)/ It leanrs the opertional state by executing a series of commands and parsing the output into a common data structure across different operatng systems. 
+
+For example let say wewant to learn about OSPF on a cisco IOS based devcie. Genie would collect output from device, parse the outputs and aggregate them into a single data sturcture. 
+
+How does Genie know what commands to use when to use when we perfrom a learn for a given protocol/feature?
+Also what define how Genie constructs the single data structure from the output of all of the commands. 
+This is achived via the Genie Ops models. 
+These models map which commands to run for a give protocol.features and define the Ops Structure. 
+
+

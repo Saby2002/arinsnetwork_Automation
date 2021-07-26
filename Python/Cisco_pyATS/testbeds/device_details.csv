@@ -1,0 +1,16 @@
+hostname,ip,username,passowrd,protocol,os
+Spine1,169.254.255.110,admin,admin,ssh,nxos
+Spine2,169.254.255.111,admin,admin,ssh,nxos
+Leaf1,169.254.255.112,admin,lab123,ssh,eos
+Leaf2,169.254.255.113,admin,lab123,ssh,eos
+XR1,169.254.255.101,arin,lab123,ssh,iosxr
+XR2,169.254.255.102,arin,lab123,ssh,iosxr
+P1,169.254.255.107,arin,lab123,ssh,ios
+P2,169.254.255.108,arin,lab123,ssh,ios
+PE3,169.254.255.103,admin,admin,ssh,timos
+PE4,169.254.255.104,admin,admin,ssh,timos
+CE1,169.254.255.105,arin,lab123,ssh,ios
+CE2,169.254.255.106,arin,lab123,ssh,ios
+PE5,169.254.255.109,arin,lab123,ssh,junos
+PE6,169.254.255.114,arin,lab123,ssh,junos
+

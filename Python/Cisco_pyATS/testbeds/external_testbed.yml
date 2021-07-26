@@ -1,0 +1,183 @@
+devices:
+  CE1:
+    connections:
+      cli:
+        ip: 169.254.255.105
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: ios
+    type: ios
+  CE2:
+    connections:
+      cli:
+        ip: 169.254.255.106
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: ios
+    type: ios
+  Leaf1:
+    connections:
+      cli:
+        ip: 169.254.255.112
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: admin
+      enable:
+        password: lab123
+    os: eos
+    type: eos
+  Leaf2:
+    connections:
+      cli:
+        ip: 169.254.255.113
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: eos
+    type: eos
+  P1:
+    connections:
+      cli:
+        ip: 169.254.255.107
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: ios
+    type: ios
+  P2:
+    connections:
+      cli:
+        ip: 169.254.255.108
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: ios
+    type: ios
+  PE3:
+    connections:
+      cli:
+        ip: 169.254.255.103
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: timos
+    type: timos
+  PE4:
+    connections:
+      cli:
+        ip: 169.254.255.104
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: timos
+    type: timos
+  PE5:
+    connections:
+      cli:
+        ip: 169.254.255.109
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: junos
+    type: junos
+  PE6:
+    connections:
+      cli:
+        ip: 169.254.255.114
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: junos
+    type: junos
+  Spine1:
+    connections:
+      cli:
+        ip: 169.254.255.110
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: nxos
+    type: nxos
+  Spine2:
+    connections:
+      cli:
+        ip: 169.254.255.111
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: nxos
+    type: nxos
+  XR1:
+    connections:
+      cli:
+        ip: 169.254.255.101
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: iosxr
+    type: iosxr
+  XR2:
+    connections:
+      cli:
+        ip: 169.254.255.102
+        protocol: ssh
+    credentials:
+      default:
+        password: lab123
+        username: arin
+      enable:
+        password: lab123
+    os: iosxr
+    type: iosxr
